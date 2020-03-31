@@ -44,19 +44,160 @@ send me a DM to check your pull request
 
  Wait for my code review.
  */
-
+#include <iostream>
 /*
  copied UDT 1:
  */
+struct Piano 
+{
+    Piano();
+    ~Piano();
 
+    int range;
+    char color;
+
+    void pressSustainPedal();
+    void releaseSustainPedal();
+    void playKeys(int startingKey, int endingKey, int noteSteps);
+};
+
+Piano::Piano() : 
+range(88),
+color('b')
+{
+    if (color == 'b')
+    {
+        std::cout << "I'm a black Concert Piano" << std::endl;
+    }
+}
+
+Piano::~Piano() 
+{
+    std::cout << "The Piano has been removed from the stage." << std::endl;
+}
+
+void Piano::pressSustainPedal()
+{
+    std::cout << "Sustain Pedal is pressed" << std::endl;
+}
+
+void Piano::releaseSustainPedal()
+{
+    std::cout << "Sustain Pedal is released" << std::endl;
+}
+
+void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
+{
+    std::cout << "-> Playing " << ((endingKey-startingKey+noteSteps) / noteSteps) 
+    << " Keys from: " << startingKey << " to " << endingKey << std::endl;
+    for (int i = startingKey; i <= endingKey; i += noteSteps)
+    {
+        std::cout << "Playing Key " << i << std::endl;
+    }
+}
 /*
  copied UDT 2:
  */
+struct AudioPlugin 
+{
+    bool bypass = false;
+    bool initialized = true;
+    int samplerate = 41000;
+
+    AudioPlugin()
+    {
+        std::cout << "The Plugin is running at " << samplerate << " Samples per Second." << std::endl;
+    } 
+    
+    ~AudioPlugin()
+    {
+        std::cout << "The Plugin has been removed." << std::endl;
+    }
+
+    void processAudio();
+};
+
+void AudioPlugin::processAudio()
+{
+    int i = 0;
+    int sampleblock = 32;
+    int processingspeed = 8;
+    while (i < sampleblock)
+    {
+        i += processingspeed;
+        std::cout << i << " out of " << sampleblock << " Samples updated.." << std::endl;
+    }
+
+
+}
 
 /*
  copied UDT 3:
  */
+struct CommonTreasureChest
+{
+    int numberOfItems = 5;
+    bool isOpened;
+    bool isRare;  
 
+    CommonTreasureChest(bool rarity) : 
+    isOpened (false), 
+    isRare (rarity)
+    {
+        if (isRare == false)
+        {
+             std::cout << "This is a common chest with a Max Capacity of 5 items" << std::endl;
+        }
+        else if (isRare == true)
+        {
+            std::cout << "This is a rare chest with a Max Capacity of 5 items" << std::endl;
+        }
+    }
+
+    ~CommonTreasureChest() 
+    {
+        std::cout << "This TreasureChest has been destroyed." << std::endl;
+    }
+
+    bool openChest(bool openState);
+    bool closeChest(bool openState);
+    void lootChest();
+};
+
+bool CommonTreasureChest::openChest (bool openState)
+{
+    if (openState == false) 
+    {
+        std::cout << "You've opened the Box, sadly there's nothing in it!" << std::endl;
+        return true;
+    }
+    std::cout << "This Box is already opened.. find another one!" << std::endl;
+    return false;
+}
+
+bool CommonTreasureChest::closeChest (bool openState)
+{
+    if (openState == true) 
+    {
+        std::cout << "You've closed the Box and locked it" << std::endl;
+        return false;
+    }
+    std::cout << "You can't lock an already locked box" << std::endl;
+    return true;
+}
+
+void CommonTreasureChest::lootChest ()
+{
+    for (int i = numberOfItems; i != 0; i -= 1 )
+    {
+        if (isRare == true && i == 1)
+        {
+            std::cout << "Legendary Item!!!" << std::endl;
+            return;
+        }
+        std::cout << "Found a common item!" << std::endl;   
+    }
+}
 /*
  new UDT 4:
  */
@@ -65,8 +206,12 @@ send me a DM to check your pull request
  new UDT 5:
  */
 
-#include <iostream>
+
 int main()
 {
+    CommonTreasureChest Box523 (true);
+    AudioPlugin Equalizer;
+    Piano Steinway;
+
     std::cout << "good to go!" << std::endl;
 }
