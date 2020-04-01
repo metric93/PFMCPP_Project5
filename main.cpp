@@ -50,7 +50,7 @@ send me a DM to check your pull request
  */
 struct Piano 
 {
-    Piano();
+    Piano(int keyrange);
     ~Piano();
 
     int range;
@@ -61,13 +61,13 @@ struct Piano
     void playKeys(int startingKey, int endingKey, int noteSteps);
 };
 
-Piano::Piano() : 
-range(88),
+Piano::Piano(int keyrange) : 
+range(keyrange),
 color('b')
 {
     if (color == 'b')
     {
-        std::cout << "I'm a black Concert Piano" << std::endl;
+        std::cout << "I'm a Piano with " << keyrange << " keys." << std::endl;
     }
 }
 
@@ -100,11 +100,14 @@ void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
  */
 struct AudioPlugin 
 {
-    bool bypass = false;
-    bool initialized = true;
-    int samplerate = 41000;
+    bool bypass;
+    bool initialized;
+    int samplerate;
 
-    AudioPlugin()
+    AudioPlugin (int plugsamplerate) :
+    bypass (false),
+    initialized (true),
+    samplerate(plugsamplerate)
     {
         std::cout << "The Plugin is running at " << samplerate << " Samples per Second." << std::endl;
     } 
@@ -201,17 +204,94 @@ void CommonTreasureChest::lootChest ()
 /*
  new UDT 4:
  */
+ struct PianoStore
+ {
+     PianoStore();
+     ~PianoStore();
+
+     Piano steinway;
+     Piano practice;
+     Piano toybox;
+
+ };
+
+PianoStore::PianoStore() :
+steinway (88),
+practice (64),
+toybox (24)
+{
+    std::cout << "The Piano Store is opened!" << std::endl;
+}
+
+PianoStore::~PianoStore()
+{
+     std::cout << "The Piano Store is closed!" << std::endl;
+}
 
 /*
  new UDT 5:
  */
 
+struct Daw 
+{
 
+    AudioPlugin equalizer;
+    AudioPlugin compressor;
+    AudioPlugin reverb;
+    
+    Daw() :
+    equalizer (48000),
+    compressor (48000),
+    reverb (48000)
+    {
+        std::cout << "Showing the Daw Splashscreen" << std::endl;
+    }
+    ~Daw()
+    {
+        std::cout << "Saving Settings and closing the Software" << std::endl;
+    }
+
+
+};
+
+
+#include <iostream>
 int main()
 {
-    CommonTreasureChest Box523 (true);
-    AudioPlugin Equalizer;
-    Piano Steinway;
 
+    std::cout << std::endl;
+
+    CommonTreasureChest Box01 (false);
+    Box01.lootChest();
+    Box01.isOpened = Box01.openChest(Box01.isOpened);
+    Box01.openChest(Box01.isOpened);
+    Box01.isOpened = Box01.closeChest(Box01.isOpened);
+    Box01.closeChest(Box01.isOpened);
+    CommonTreasureChest Box02 (true);
+    Box02.lootChest();
+
+    std::cout << std::endl;
+
+    AudioPlugin MultibandCompressor (44100);
+    MultibandCompressor.processAudio();
+
+    std::cout << std::endl;
+
+    Piano GrandPiano (88);
+    GrandPiano.pressSustainPedal();
+    GrandPiano.playKeys(25,30, 1);
+    GrandPiano.playKeys(50,80, 10);
+
+    std::cout << std::endl;
+
+    PianoStore keyWorld;
+
+    std::cout << std::endl;
+
+    Daw cubase;
+  
+
+    std::cout << std::endl;
     std::cout << "good to go!" << std::endl;
+    std::cout << std::endl;
 }
