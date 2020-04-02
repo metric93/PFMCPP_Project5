@@ -44,29 +44,248 @@ send me a DM to check your pull request
 
  Wait for my code review.
  */
-
+#include <iostream>
 /*
  copied UDT 1:
  */
+struct Piano 
+{
+    Piano(int keyrange);
+    ~Piano();
 
+    int range;
+    char color;
+
+    void pressSustainPedal();
+    void releaseSustainPedal();
+    void playKeys(int startingKey, int endingKey, int noteSteps);
+};
+
+Piano::Piano(int keyrange) : 
+range(keyrange),
+color('b')
+{
+    if (color == 'b')
+    {
+        std::cout << "I'm a Piano with " << keyrange << " keys." << std::endl;
+    }
+}
+
+Piano::~Piano() 
+{
+    std::cout << "The Piano has been removed from the stage." << std::endl;
+}
+
+void Piano::pressSustainPedal()
+{
+    std::cout << "Sustain Pedal is pressed" << std::endl;
+}
+
+void Piano::releaseSustainPedal()
+{
+    std::cout << "Sustain Pedal is released" << std::endl;
+}
+
+void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
+{
+    std::cout << "-> Playing " << ((endingKey-startingKey+noteSteps) / noteSteps) 
+    << " Keys from: " << startingKey << " to " << endingKey << std::endl;
+    for (int i = startingKey; i <= endingKey; i += noteSteps)
+    {
+        std::cout << "Playing Key " << i << std::endl;
+    }
+}
 /*
  copied UDT 2:
  */
+struct AudioPlugin 
+{
+    bool bypass;
+    bool initialized;
+    int samplerate;
+
+    AudioPlugin (int plugsamplerate) :
+    bypass (false),
+    initialized (true),
+    samplerate(plugsamplerate)
+    {
+        std::cout << "The Plugin is running at " << samplerate << " Samples per Second." << std::endl;
+    } 
+    
+    ~AudioPlugin()
+    {
+        std::cout << "The Plugin has been removed." << std::endl;
+    }
+
+    void processAudio();
+};
+
+void AudioPlugin::processAudio()
+{
+    int i = 0;
+    int sampleblock = 32;
+    int processingspeed = 8;
+    while (i < sampleblock)
+    {
+        i += processingspeed;
+        std::cout << i << " out of " << sampleblock << " Samples updated.." << std::endl;
+    }
+}
 
 /*
  copied UDT 3:
  */
+struct CommonTreasureChest
+{
+    int numberOfItems = 5;
+    bool isOpened;
+    bool isRare;  
 
+    CommonTreasureChest(bool rarity) : 
+    isOpened (false), 
+    isRare (rarity)
+    {
+        if (isRare == false)
+        {
+             std::cout << "This is a common chest with a Max Capacity of 5 items" << std::endl;
+        }
+        else if (isRare == true)
+        {
+            std::cout << "This is a rare chest with a Max Capacity of 5 items" << std::endl;
+        }
+    }
+
+    ~CommonTreasureChest() 
+    {
+        std::cout << "This TreasureChest has been destroyed." << std::endl;
+    }
+
+    bool openChest(bool openState);
+    bool closeChest(bool openState);
+    void lootChest();
+};
+
+bool CommonTreasureChest::openChest (bool openState)
+{
+    if (openState == false) 
+    {
+        std::cout << "You've opened the Box, sadly there's nothing in it!" << std::endl;
+        return true;
+    }
+    std::cout << "This Box is already opened.. find another one!" << std::endl;
+    return false;
+}
+
+bool CommonTreasureChest::closeChest (bool openState)
+{
+    if (openState == true) 
+    {
+        std::cout << "You've closed the Box and locked it" << std::endl;
+        return false;
+    }
+    std::cout << "You can't lock an already locked box" << std::endl;
+    return true;
+}
+
+void CommonTreasureChest::lootChest ()
+{
+    for (int i = numberOfItems; i != 0; i -= 1 )
+    {
+        if (isRare == true && i == 1)
+        {
+            std::cout << "Legendary Item!!!" << std::endl;
+            return;
+        }
+        std::cout << "Found a common item!" << std::endl;   
+    }
+}
 /*
  new UDT 4:
  */
+ struct PianoStore
+ {
+    PianoStore();
+    ~PianoStore();
+
+    Piano steinway;
+    Piano practice;
+    Piano toybox;
+
+ };
+
+PianoStore::PianoStore() :
+steinway (88),
+practice (64),
+toybox (24)
+{
+    std::cout << "The Piano Store is opened!" << std::endl;
+}
+
+PianoStore::~PianoStore()
+{
+     std::cout << "The Piano Store is closed!" << std::endl;
+}
 
 /*
  new UDT 5:
  */
 
+struct Daw 
+{
+    AudioPlugin equalizer;
+    AudioPlugin compressor;
+    AudioPlugin reverb;
+    
+    Daw() :
+    equalizer (48000),
+    compressor (48000),
+    reverb (48000)
+    {
+        std::cout << "Showing the Daw Splashscreen" << std::endl;
+    }
+
+    ~Daw()
+    {
+        std::cout << "Saving Settings and closing the Software" << std::endl;
+    }
+};
+
+
 #include <iostream>
 int main()
 {
+    std::cout << std::endl;
+
+    CommonTreasureChest Box01 (false);
+    Box01.lootChest();
+    Box01.isOpened = Box01.openChest(Box01.isOpened);
+    Box01.openChest(Box01.isOpened);
+    Box01.isOpened = Box01.closeChest(Box01.isOpened);
+    Box01.closeChest(Box01.isOpened);
+    CommonTreasureChest Box02 (true);
+    Box02.lootChest();
+
+    std::cout << std::endl;
+
+    AudioPlugin MultibandCompressor (44100);
+    MultibandCompressor.processAudio();
+
+    std::cout << std::endl;
+
+    Piano GrandPiano (88);
+    GrandPiano.pressSustainPedal();
+    GrandPiano.playKeys(25,30, 1);
+    GrandPiano.playKeys(50,80, 10);
+
+    std::cout << std::endl;
+
+    PianoStore keyWorld;
+
+    std::cout << std::endl;
+
+    Daw cubase;
+
+    std::cout << std::endl;
     std::cout << "good to go!" << std::endl;
+    std::cout << std::endl;
 }
