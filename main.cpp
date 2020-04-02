@@ -130,8 +130,6 @@ void AudioPlugin::processAudio()
         i += processingspeed;
         std::cout << i << " out of " << sampleblock << " Samples updated.." << std::endl;
     }
-
-
 }
 
 /*
@@ -206,12 +204,12 @@ void CommonTreasureChest::lootChest ()
  */
  struct PianoStore
  {
-     PianoStore();
-     ~PianoStore();
+    PianoStore();
+    ~PianoStore();
 
-     Piano steinway;
-     Piano practice;
-     Piano toybox;
+    Piano steinway;
+    Piano practice;
+    Piano toybox;
 
  };
 
@@ -234,7 +232,6 @@ PianoStore::~PianoStore()
 
 struct Daw 
 {
-
     AudioPlugin equalizer;
     AudioPlugin compressor;
     AudioPlugin reverb;
@@ -246,19 +243,17 @@ struct Daw
     {
         std::cout << "Showing the Daw Splashscreen" << std::endl;
     }
+
     ~Daw()
     {
         std::cout << "Saving Settings and closing the Software" << std::endl;
     }
-
-
 };
 
 
 #include <iostream>
 int main()
 {
-
     std::cout << std::endl;
 
     CommonTreasureChest Box01 (false);
@@ -289,7 +284,6 @@ int main()
     std::cout << std::endl;
 
     Daw cubase;
-  
 
     std::cout << std::endl;
     std::cout << "good to go!" << std::endl;
