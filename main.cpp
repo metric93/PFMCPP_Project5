@@ -190,6 +190,8 @@ struct CommonTreasureChest
     bool openChest(bool openState);
     bool closeChest(bool openState);
     void lootChest();
+    int printTreasureCount();
+    bool printRarity();
 };
 
 bool CommonTreasureChest::openChest (bool openState)
@@ -226,6 +228,21 @@ void CommonTreasureChest::lootChest ()
         std::cout << "Found a common item!" << std::endl;   
     }
 }
+
+int CommonTreasureChest::printTreasureCount()
+{
+    std::cout << "Treasure Count: " << this->numberOfItems << std::endl;
+    return this->numberOfItems;
+}
+
+bool CommonTreasureChest::printRarity()
+{
+    std::cout << "Rarity: " << this->isRare << std::endl;
+    return this->isRare;
+}
+
+
+
 /*
  new UDT 4:
  */
@@ -285,13 +302,24 @@ int main()
     std::cout << std::endl;
 
     CommonTreasureChest Box01 (false);
+    CommonTreasureChest Box02 (true);
+    /*
     Box01.lootChest();
     Box01.isOpened = Box01.openChest(Box01.isOpened);
     Box01.openChest(Box01.isOpened);
     Box01.isOpened = Box01.closeChest(Box01.isOpened);
     Box01.closeChest(Box01.isOpened);
-    CommonTreasureChest Box02 (true);
     Box02.lootChest();
+    */
+
+    std::cout << "Treasure Count: " << Box01.numberOfItems << std::endl;
+    Box01.printTreasureCount();
+
+
+    std::cout << "Rarity: " << Box01.isRare << std::endl;
+    Box01.printRarity();
+    std::cout << "Rarity: " << Box02.isRare << std::endl;
+    Box02.printRarity();
 
     std::cout << std::endl;
 
