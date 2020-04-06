@@ -164,21 +164,23 @@ void AudioPlugin::processAudio()
  */
 struct CommonTreasureChest
 {
-    int numberOfItems = 5;
+    int numberOfItems;
     bool isOpened;
     bool isRare;  
 
-    CommonTreasureChest(bool rarity) : 
-    isOpened (false), 
-    isRare (rarity)
+    CommonTreasureChest(bool isRare)
     {
+        this->isRare = isRare;
+        this->isOpened = false;
+        numberOfItems = 5;
+
         if (isRare == false)
         {
-             std::cout << "This is a common chest with a Max Capacity of 5 items" << std::endl;
+             std::cout << "This is a common chest with a Max Capacity of " << numberOfItems << std::endl;
         }
         else if (isRare == true)
         {
-            std::cout << "This is a rare chest with a Max Capacity of 5 items" << std::endl;
+            std::cout << "This is a rare chest with a Max Capacity of " << numberOfItems << std::endl;
         }
     }
 
@@ -192,6 +194,7 @@ struct CommonTreasureChest
     void lootChest();
     int printTreasureCount();
     bool printRarity();
+    void changeRarity(bool rarity);
 };
 
 bool CommonTreasureChest::openChest (bool openState)
@@ -239,6 +242,21 @@ bool CommonTreasureChest::printRarity()
 {
     std::cout << "Rarity: " << this->isRare << std::endl;
     return this->isRare;
+}
+
+void spawnChest()
+{
+    CommonTreasureChest debug (true);
+    debug.printTreasureCount();
+    debug.printRarity();
+    debug.changeRarity(false);
+    
+    
+}
+
+void CommonTreasureChest::changeRarity(bool isRare)
+{
+    this->isRare = isRare;
 }
 
 
@@ -301,8 +319,8 @@ int main()
 	Example::main();
     std::cout << std::endl;
 
-    CommonTreasureChest Box01 (false);
-    CommonTreasureChest Box02 (true);
+    //CommonTreasureChest Box01 (false);
+    //CommonTreasureChest Box02 (true);
     /*
     Box01.lootChest();
     Box01.isOpened = Box01.openChest(Box01.isOpened);
@@ -312,14 +330,16 @@ int main()
     Box02.lootChest();
     */
 
-    std::cout << "Treasure Count: " << Box01.numberOfItems << std::endl;
-    Box01.printTreasureCount();
+    //std::cout << "Treasure Count: " << Box01.numberOfItems << std::endl;
+    //Box01.printTreasureCount();
 
 
-    std::cout << "Rarity: " << Box01.isRare << std::endl;
-    Box01.printRarity();
-    std::cout << "Rarity: " << Box02.isRare << std::endl;
-    Box02.printRarity();
+    //std::cout << "Rarity: " << Box01.isRare << std::endl;
+    //Box01.printRarity();
+    //std::cout << "Rarity: " << Box02.isRare << std::endl;
+    //Box02.printRarity();
+
+    spawnChest();
 
     std::cout << std::endl;
 
