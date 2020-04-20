@@ -74,7 +74,7 @@ namespace Example
 #include <iostream>
 /*
  copied UDT 1:
- */
+
 struct Piano 
 {
     Piano(int keyrange);
@@ -122,6 +122,7 @@ void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
         std::cout << "Playing Key " << i << std::endl;
     }
 }
+ */
 /*
  copied UDT 2:
  */
@@ -145,7 +146,18 @@ struct AudioPlugin
     }
 
     void processAudio();
+
+    void getData()
+    {
+        std::cout << "AudioPlugin returnValue(): " << this->returnValue() << " and AudioPlugin samplerate: " << this->samplerate << std::endl;  
+    }
+
+    int returnValue() { return 3; }
+    //float memberVariable = 3.14f;
 };
+
+
+
 
 void AudioPlugin::processAudio()
 {
@@ -161,7 +173,7 @@ void AudioPlugin::processAudio()
 
 /*
  copied UDT 3:
- */
+
 struct CommonTreasureChest
 {
     int numberOfItems;
@@ -172,7 +184,7 @@ struct CommonTreasureChest
     {
         this->isRare = isRare;
         this->isOpened = false;
-        numberOfItems = 5;
+        this->numberOfItems = 5;
 
         if (isRare == false)
         {
@@ -244,26 +256,17 @@ bool CommonTreasureChest::printRarity()
     return this->isRare;
 }
 
-void spawnChest()
-{
-    CommonTreasureChest debug (true);
-    debug.printTreasureCount();
-    debug.printRarity();
-    debug.changeRarity(false);
-    
-    
-}
 
 void CommonTreasureChest::changeRarity(bool isRare)
 {
     this->isRare = isRare;
 }
-
+ */
 
 
 /*
  new UDT 4:
- */
+
  struct PianoStore
  {
     PianoStore();
@@ -287,10 +290,10 @@ PianoStore::~PianoStore()
 {
      std::cout << "The Piano Store is closed!" << std::endl;
 }
-
+ */
 /*
  new UDT 5:
- */
+
 
 struct Daw 
 {
@@ -311,7 +314,7 @@ struct Daw
         std::cout << "Saving Settings and closing the Software" << std::endl;
     }
 };
-
+*/
 
 #include <iostream>
 int main()
@@ -319,35 +322,31 @@ int main()
 	Example::main();
     std::cout << std::endl;
 
-    //CommonTreasureChest Box01 (false);
-    //CommonTreasureChest Box02 (true);
     /*
-    Box01.lootChest();
-    Box01.isOpened = Box01.openChest(Box01.isOpened);
-    Box01.openChest(Box01.isOpened);
-    Box01.isOpened = Box01.closeChest(Box01.isOpened);
-    Box01.closeChest(Box01.isOpened);
-    Box02.lootChest();
-    */
+    CommonTreasureChest Box01 (false);
+    std::cout << "This is a common chest with a Max Capacity of " << Box01.numberOfItems << std::endl;
+    CommonTreasureChest Box02 (true);
+    std::cout << "This is a rare chest with a Max Capacity of " << Box01.numberOfItems << std::endl;
+    Box01.printRarity();
+    std::cout << "Rarity: " << Box01.isRare << std::endl;
+    Box02.printRarity();
+    std::cout << "Rarity: " << Box02.isRare << std::endl;
+   
+ */
 
-    //std::cout << "Treasure Count: " << Box01.numberOfItems << std::endl;
-    //Box01.printTreasureCount();
-
-
-    //std::cout << "Rarity: " << Box01.isRare << std::endl;
-    //Box01.printRarity();
-    //std::cout << "Rarity: " << Box02.isRare << std::endl;
-    //Box02.printRarity();
-
-    spawnChest();
 
     std::cout << std::endl;
 
-    AudioPlugin MultibandCompressor (44100);
-    MultibandCompressor.processAudio();
+    AudioPlugin EQ (44100);
+    EQ.processAudio();
+
+    //Function Call
+    EQ.getData();
+    //STD cout
+    std::cout << "EQ returnValue(): " << EQ.returnValue() << " and EQ samplerate: " << EQ.samplerate << std::endl; 
 
     std::cout << std::endl;
-
+  /*
     Piano GrandPiano (88);
     GrandPiano.pressSustainPedal();
     GrandPiano.playKeys(25,30, 1);
@@ -364,4 +363,6 @@ int main()
     std::cout << std::endl;
     std::cout << "good to go!" << std::endl;
     std::cout << std::endl;
+
+*/
 }
