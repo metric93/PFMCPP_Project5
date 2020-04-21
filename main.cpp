@@ -74,7 +74,7 @@ namespace Example
 #include <iostream>
 /*
  copied UDT 1:
-
+ */
 struct Piano 
 {
     Piano(int keyrange);
@@ -86,15 +86,22 @@ struct Piano
     void pressSustainPedal();
     void releaseSustainPedal();
     void playKeys(int startingKey, int endingKey, int noteSteps);
+
+    int getOctaves()
+    {
+        int octaves = this->range / 12;
+        return octaves;
+    }
+
 };
 
-Piano::Piano(int keyrange) : 
-range(keyrange),
+Piano::Piano(int keyamount) : 
+range(keyamount),
 color('b')
 {
     if (color == 'b')
     {
-        std::cout << "I'm a Piano with " << keyrange << " keys." << std::endl;
+        std::cout << "I'm a Piano with " << this->range << " keys and " << getOctaves() << " Ocavtes" << std::endl;
     }
 }
 
@@ -122,7 +129,7 @@ void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
         std::cout << "Playing Key " << i << std::endl;
     }
 }
- */
+
 /*
  copied UDT 2:
  */
@@ -137,7 +144,7 @@ struct AudioPlugin
     initialized (true),
     samplerate(plugsamplerate)
     {
-        std::cout << "The Plugin is running at " << samplerate << " Samples per Second." << std::endl;
+        std::cout << "New Plugin is running at " << samplerate << " Samples per Second." << std::endl;
     } 
     
     ~AudioPlugin()
@@ -149,10 +156,11 @@ struct AudioPlugin
 
     void getData()
     {
-        std::cout << "AudioPlugin returnValue(): " << this->returnValue() << " and AudioPlugin samplerate: " << this->samplerate << std::endl;  
+        std::cout << "AudioPlugin instanceID(): " << this->instanceID() << " and AudioPlugin samplerate: " << this->samplerate << std::endl;  
     }
 
-    int returnValue() { return 3; }
+
+    int instanceID() { return 3; }
     //float memberVariable = 3.14f;
 };
 
@@ -263,9 +271,9 @@ void CommonTreasureChest::changeRarity(bool isRare)
 }
  */
 
-
 /*
  new UDT 4:
+  */
 
  struct PianoStore
  {
@@ -290,10 +298,10 @@ PianoStore::~PianoStore()
 {
      std::cout << "The Piano Store is closed!" << std::endl;
 }
- */
+
 /*
  new UDT 5:
-
+*/
 
 struct Daw 
 {
@@ -313,8 +321,13 @@ struct Daw
     {
         std::cout << "Saving Settings and closing the Software" << std::endl;
     }
+
+    void checkInitialization ()
+    {
+        std::cout << "EQ:" << this->equalizer.initialized << "  Compressor:" << this->compressor.initialized << "  Reverb:" << this->reverb.initialized << std::endl;
+    }
 };
-*/
+
 
 #include <iostream>
 int main()
@@ -336,33 +349,48 @@ int main()
 
 
     std::cout << std::endl;
-
+    //UDT1
     AudioPlugin EQ (44100);
-    EQ.processAudio();
-
-    //Function Call
+    //EQ.processAudio();
     EQ.getData();
-    //STD cout
-    std::cout << "EQ returnValue(): " << EQ.returnValue() << " and EQ samplerate: " << EQ.samplerate << std::endl; 
+    std::cout << "EQ instanceID(): " << EQ.instanceID() << " and EQ samplerate: " << EQ.samplerate << std::endl; 
 
     std::cout << std::endl;
-  /*
+    //UDT2
     Piano GrandPiano (88);
-    GrandPiano.pressSustainPedal();
-    GrandPiano.playKeys(25,30, 1);
-    GrandPiano.playKeys(50,80, 10);
+    std::cout << "I'm a Piano with " << GrandPiano.range << " keys and " << GrandPiano.getOctaves() << " Ocavtes"<< std::endl;
+    //GrandPiano.pressSustainPedal();
+    //GrandPiano.playKeys(25,30, 1);
+    //GrandPiano.playKeys(50,80, 10);
+
 
     std::cout << std::endl;
-
+    //UDT3
     PianoStore keyWorld;
+    std::cout << "I'm a Piano with " << keyWorld.steinway.range << " keys and " << 
+    keyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << keyWorld.practice.range << " keys and " << 
+    keyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << keyWorld.toybox.range << " keys and " << 
+    keyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
 
+    
     std::cout << std::endl;
-
+    //UDT4
     Daw cubase;
+    cubase.checkInitialization();
+    std::cout << "EQ:" << cubase.equalizer.initialized << "  Compressor:" << cubase.compressor.initialized << "  Reverb:" << cubase.reverb.initialized << std::endl;
+
+
+
+
+
+
+
 
     std::cout << std::endl;
     std::cout << "good to go!" << std::endl;
     std::cout << std::endl;
 
-*/
+
 }
