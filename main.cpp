@@ -101,7 +101,7 @@ color('b')
 {
     if (color == 'b')
     {
-        std::cout << "I'm a Piano with " << this->range << " keys and " << getOctaves() << " Ocavtes" << std::endl;
+        std::cout << "I'm a Piano with " << this->range << " keys and " << getOctaves() << " Ocavtes." << std::endl;
     }
 }
 
@@ -181,16 +181,16 @@ void AudioPlugin::processAudio()
 
 /*
  copied UDT 3:
-
+ */
 struct CommonTreasureChest
 {
     int numberOfItems;
     bool isOpened;
     bool isRare;  
 
-    CommonTreasureChest(bool isRare)
+    CommonTreasureChest(bool rarity)
     {
-        this->isRare = isRare;
+        this->isRare = rarity;
         this->isOpened = false;
         this->numberOfItems = 5;
 
@@ -254,22 +254,17 @@ void CommonTreasureChest::lootChest ()
 
 int CommonTreasureChest::printTreasureCount()
 {
-    std::cout << "Treasure Count: " << this->numberOfItems << std::endl;
+    std::cout << "Treasure Count: " << this->numberOfItems << 
+    " Rarity :" << this->isRare << std::endl;
     return this->numberOfItems;
 }
 
-bool CommonTreasureChest::printRarity()
+
+void CommonTreasureChest::changeRarity(bool rarity)
 {
-    std::cout << "Rarity: " << this->isRare << std::endl;
-    return this->isRare;
+    this->isRare = rarity;
 }
 
-
-void CommonTreasureChest::changeRarity(bool isRare)
-{
-    this->isRare = isRare;
-}
- */
 
 /*
  new UDT 4:
@@ -335,54 +330,50 @@ int main()
 	Example::main();
     std::cout << std::endl;
 
-    /*
+    //UDT1
     CommonTreasureChest Box01 (false);
     std::cout << "This is a common chest with a Max Capacity of " << Box01.numberOfItems << std::endl;
     CommonTreasureChest Box02 (true);
     std::cout << "This is a rare chest with a Max Capacity of " << Box01.numberOfItems << std::endl;
-    Box01.printRarity();
-    std::cout << "Rarity: " << Box01.isRare << std::endl;
-    Box02.printRarity();
-    std::cout << "Rarity: " << Box02.isRare << std::endl;
-   
- */
 
+    Box01.printTreasureCount();
+    std::cout << "Rarity: " << Box01.isRare << std::endl;
+    std::cout << "Treasure Count: " << Box01.numberOfItems << 
+    " Rarity :" << Box01.isRare << std::endl;
 
     std::cout << std::endl;
-    //UDT1
+
+    //UDT2
     AudioPlugin EQ (44100);
     //EQ.processAudio();
     EQ.getData();
     std::cout << "EQ instanceID(): " << EQ.instanceID() << " and EQ samplerate: " << EQ.samplerate << std::endl; 
 
     std::cout << std::endl;
-    //UDT2
+    //UDT3
     Piano GrandPiano (88);
     std::cout << "I'm a Piano with " << GrandPiano.range << " keys and " << GrandPiano.getOctaves() << " Ocavtes"<< std::endl;
     //GrandPiano.pressSustainPedal();
     //GrandPiano.playKeys(25,30, 1);
     //GrandPiano.playKeys(50,80, 10);
 
+    std::cout << std::endl;
+
+    //UDT4 (using only UDTs)
+    PianoStore KeyWorld;
+    std::cout << "I'm a Piano with " << KeyWorld.steinway.range << " keys and " << 
+    KeyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << KeyWorld.practice.range << " keys and " << 
+    KeyWorld.practice.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << KeyWorld.toybox.range << " keys and " << 
+    KeyWorld.toybox.getOctaves()  << " Octaves." << std::endl;
 
     std::cout << std::endl;
-    //UDT3
-    PianoStore keyWorld;
-    std::cout << "I'm a Piano with " << keyWorld.steinway.range << " keys and " << 
-    keyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
-    std::cout << "I'm a Piano with " << keyWorld.practice.range << " keys and " << 
-    keyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
-    std::cout << "I'm a Piano with " << keyWorld.toybox.range << " keys and " << 
-    keyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
 
-    
-    std::cout << std::endl;
-    //UDT4
-    Daw cubase;
-    cubase.checkInitialization();
-    std::cout << "EQ:" << cubase.equalizer.initialized << "  Compressor:" << cubase.compressor.initialized << "  Reverb:" << cubase.reverb.initialized << std::endl;
-
-
-
+    //UDT5 (using only UDTs)
+    Daw Cubase;
+    Cubase.checkInitialization();
+    std::cout << "EQ:" << Cubase.equalizer.initialized << "  Compressor:" << Cubase.compressor.initialized << "  Reverb:" << Cubase.reverb.initialized << std::endl;
 
 
 
@@ -391,6 +382,4 @@ int main()
     std::cout << std::endl;
     std::cout << "good to go!" << std::endl;
     std::cout << std::endl;
-
-
 }
