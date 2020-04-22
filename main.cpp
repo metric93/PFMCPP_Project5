@@ -86,15 +86,22 @@ struct Piano
     void pressSustainPedal();
     void releaseSustainPedal();
     void playKeys(int startingKey, int endingKey, int noteSteps);
+
+    int getOctaves()
+    {
+        int octaves = this->range / 12;
+        return octaves;
+    }
+
 };
 
-Piano::Piano(int keyrange) : 
-range(keyrange),
+Piano::Piano(int keyamount) : 
+range(keyamount),
 color('b')
 {
     if (color == 'b')
     {
-        std::cout << "I'm a Piano with " << keyrange << " keys." << std::endl;
+        std::cout << "I'm a Piano with " << this->range << " keys and " << getOctaves() << " Ocavtes." << std::endl;
     }
 }
 
@@ -122,6 +129,7 @@ void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
         std::cout << "Playing Key " << i << std::endl;
     }
 }
+
 /*
  copied UDT 2:
  */
@@ -136,7 +144,7 @@ struct AudioPlugin
     initialized (true),
     samplerate(plugsamplerate)
     {
-        std::cout << "The Plugin is running at " << samplerate << " Samples per Second." << std::endl;
+        std::cout << "New Plugin is running at " << samplerate << " Samples per Second." << std::endl;
     } 
     
     ~AudioPlugin()
@@ -145,7 +153,19 @@ struct AudioPlugin
     }
 
     void processAudio();
+
+    void getData()
+    {
+        std::cout << "AudioPlugin instanceID(): " << this->instanceID() << " and AudioPlugin samplerate: " << this->samplerate << std::endl;  
+    }
+
+
+    int instanceID() { return 3; }
+    //float memberVariable = 3.14f;
 };
+
+
+
 
 void AudioPlugin::processAudio()
 {
@@ -164,21 +184,23 @@ void AudioPlugin::processAudio()
  */
 struct CommonTreasureChest
 {
-    int numberOfItems = 5;
+    int numberOfItems;
     bool isOpened;
     bool isRare;  
 
-    CommonTreasureChest(bool rarity) : 
-    isOpened (false), 
-    isRare (rarity)
+    CommonTreasureChest(bool rarity)
     {
+        this->isRare = rarity;
+        this->isOpened = false;
+        this->numberOfItems = 5;
+
         if (isRare == false)
         {
-             std::cout << "This is a common chest with a Max Capacity of 5 items" << std::endl;
+             std::cout << "This is a common chest with a Max Capacity of " << numberOfItems << std::endl;
         }
         else if (isRare == true)
         {
-            std::cout << "This is a rare chest with a Max Capacity of 5 items" << std::endl;
+            std::cout << "This is a rare chest with a Max Capacity of " << numberOfItems << std::endl;
         }
     }
 
@@ -190,6 +212,9 @@ struct CommonTreasureChest
     bool openChest(bool openState);
     bool closeChest(bool openState);
     void lootChest();
+    int printTreasureCount();
+    bool printRarity();
+    void changeRarity(bool rarity);
 };
 
 bool CommonTreasureChest::openChest (bool openState)
@@ -226,9 +251,25 @@ void CommonTreasureChest::lootChest ()
         std::cout << "Found a common item!" << std::endl;   
     }
 }
+
+int CommonTreasureChest::printTreasureCount()
+{
+    std::cout << "Treasure Count: " << this->numberOfItems << 
+    " Rarity :" << this->isRare << std::endl;
+    return this->numberOfItems;
+}
+
+
+void CommonTreasureChest::changeRarity(bool rarity)
+{
+    this->isRare = rarity;
+}
+
+
 /*
  new UDT 4:
- */
+  */
+
  struct PianoStore
  {
     PianoStore();
@@ -255,7 +296,7 @@ PianoStore::~PianoStore()
 
 /*
  new UDT 5:
- */
+*/
 
 struct Daw 
 {
@@ -275,6 +316,11 @@ struct Daw
     {
         std::cout << "Saving Settings and closing the Software" << std::endl;
     }
+
+    void checkInitialization ()
+    {
+        std::cout << "EQ:" << this->equalizer.initialized << "  Compressor:" << this->compressor.initialized << "  Reverb:" << this->reverb.initialized << std::endl;
+    }
 };
 
 
@@ -284,34 +330,54 @@ int main()
 	Example::main();
     std::cout << std::endl;
 
+    //UDT1
     CommonTreasureChest Box01 (false);
-    Box01.lootChest();
-    Box01.isOpened = Box01.openChest(Box01.isOpened);
-    Box01.openChest(Box01.isOpened);
-    Box01.isOpened = Box01.closeChest(Box01.isOpened);
-    Box01.closeChest(Box01.isOpened);
+    std::cout << "This is a common chest with a Max Capacity of " << Box01.numberOfItems << std::endl;
     CommonTreasureChest Box02 (true);
-    Box02.lootChest();
+    std::cout << "This is a rare chest with a Max Capacity of " << Box01.numberOfItems << std::endl;
+
+    Box01.printTreasureCount();
+    std::cout << "Rarity: " << Box01.isRare << std::endl;
+    std::cout << "Treasure Count: " << Box01.numberOfItems << 
+    " Rarity :" << Box01.isRare << std::endl;
 
     std::cout << std::endl;
 
-    AudioPlugin MultibandCompressor (44100);
-    MultibandCompressor.processAudio();
+    //UDT2
+    AudioPlugin EQ (44100);
+    //EQ.processAudio();
+    EQ.getData();
+    std::cout << "EQ instanceID(): " << EQ.instanceID() << " and EQ samplerate: " << EQ.samplerate << std::endl; 
 
     std::cout << std::endl;
-
+    //UDT3
     Piano GrandPiano (88);
-    GrandPiano.pressSustainPedal();
-    GrandPiano.playKeys(25,30, 1);
-    GrandPiano.playKeys(50,80, 10);
+    std::cout << "I'm a Piano with " << GrandPiano.range << " keys and " << GrandPiano.getOctaves() << " Ocavtes"<< std::endl;
+    //GrandPiano.pressSustainPedal();
+    //GrandPiano.playKeys(25,30, 1);
+    //GrandPiano.playKeys(50,80, 10);
 
     std::cout << std::endl;
 
-    PianoStore keyWorld;
+    //UDT4 (using only UDTs)
+    PianoStore KeyWorld;
+    std::cout << "I'm a Piano with " << KeyWorld.steinway.range << " keys and " << 
+    KeyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << KeyWorld.practice.range << " keys and " << 
+    KeyWorld.practice.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << KeyWorld.toybox.range << " keys and " << 
+    KeyWorld.toybox.getOctaves()  << " Octaves." << std::endl;
 
     std::cout << std::endl;
 
-    Daw cubase;
+    //UDT5 (using only UDTs)
+    Daw Cubase;
+    Cubase.checkInitialization();
+    std::cout << "EQ:" << Cubase.equalizer.initialized << "  Compressor:" << Cubase.compressor.initialized << "  Reverb:" << Cubase.reverb.initialized << std::endl;
+
+
+
+
 
     std::cout << std::endl;
     std::cout << "good to go!" << std::endl;
