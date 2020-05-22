@@ -6,7 +6,7 @@ Create a branch named Part3
 
  the 'new' keyword
 
- 1) add #include "LeakedObjectDetector.h" to main
+ 1) add #include "LeakedObjectDetector.h" to main (DONE)
  
  3) Add 'JUCE_LEAK_DETECTOR(OwnerClass)' at the end of your UDTs.
  
@@ -32,6 +32,7 @@ send me a DM to check your pull request
 
 
 #include <iostream>
+#include "LeakedObjectDetector.h"
 /*
  copied UDT 1:
  */
@@ -53,6 +54,23 @@ struct Piano
         return octaves;
     }
 
+    JUCE_LEAK_DETECTOR(Piano)
+};
+
+struct PianoWrapper
+{
+    Piano* address = nullptr; //Initilaize Pointer to a Piano UDT to nullptr
+
+    //Constructor for the PianoWrapper taking  a Pointer to a Piano UDT as an argument
+    PianoWrapper(Piano* p) : 
+    address(p)        //updating the Pointer named piano to the address of the UDT type pointerwe have a variable in the constructor
+    {
+
+    }
+    ~PianoWrapper()
+    {
+        delete address; //deleting the piano pointer when the destructor is called.
+    }
 };
 
 Piano::Piano(int keyamount) : 
@@ -90,6 +108,16 @@ void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
     }
 }
 
+
+
+
+
+
+
+
+
+
+
 /*
  copied UDT 2:
  */
@@ -122,9 +150,25 @@ struct AudioPlugin
 
     int instanceID() { return 3; }
     //float memberVariable = 3.14f;
+
+    JUCE_LEAK_DETECTOR(AudioPlugin)
 };
 
+struct AudioPluginWrapper
+{
+    AudioPlugin* address = nullptr;
 
+    AudioPluginWrapper(AudioPlugin* p) :
+    address (p)
+    {
+
+    }
+
+   ~AudioPluginWrapper ()
+   {
+       delete address;
+   }
+};
 
 
 void AudioPlugin::processAudio()
@@ -175,7 +219,27 @@ struct CommonTreasureChest
     int printTreasureCount();
     bool printRarity();
     void changeRarity(bool rarity);
+
+
+    JUCE_LEAK_DETECTOR(CommonTreasureChest)
 };
+
+struct CommonTreasureChestWrapper
+{
+    CommonTreasureChest* address = nullptr;
+
+    CommonTreasureChestWrapper(CommonTreasureChest* c) :
+    address (c)
+    {
+    }
+
+    ~CommonTreasureChestWrapper()
+    {
+        delete address;
+    }
+};
+
+
 
 bool CommonTreasureChest::openChest (bool openState)
 {
@@ -239,6 +303,8 @@ void CommonTreasureChest::changeRarity(bool rarity)
     Piano practice;
     Piano toybox;
 
+    JUCE_LEAK_DETECTOR(PianoStore)
+
  };
 
 PianoStore::PianoStore() :
@@ -253,6 +319,23 @@ PianoStore::~PianoStore()
 {
      std::cout << "The Piano Store is closed!" << std::endl;
 }
+
+struct PianoStoreWrapper
+{
+    PianoStore* address = nullptr;
+
+    PianoStoreWrapper(PianoStore* p) :
+    address (p)
+    {
+    }
+
+    ~PianoStoreWrapper()
+    {
+        delete address;
+    }
+};
+
+
 
 /*
  new UDT 5:
@@ -281,64 +364,78 @@ struct Daw
     {
         std::cout << "EQ:" << this->equalizer.initialized << "  Compressor:" << this->compressor.initialized << "  Reverb:" << this->reverb.initialized << std::endl;
     }
+
+    JUCE_LEAK_DETECTOR(Daw)
 };
 
+struct DawWrapper
+{
+    Daw* address = nullptr;
+
+    DawWrapper (Daw* d) :
+    address (d)
+    {
+    }
+
+    ~DawWrapper()
+    {
+        delete address;
+    }
+};
 
 #include <iostream>
 int main()
 {
-    std::cout << std::endl;
-
+/*
+*/
     //UDT1
-    CommonTreasureChest Box01 (false);
-    std::cout << "This is a common chest with a Max Capacity of " << Box01.numberOfItems << std::endl;
-    CommonTreasureChest Box02 (true);
-    std::cout << "This is a rare chest with a Max Capacity of " << Box01.numberOfItems << std::endl;
+    CommonTreasureChestWrapper box1 (new CommonTreasureChest(false));   
+    std::cout << "This is a common chest with a Max Capacity of " << box1.address->numberOfItems << std::endl;
+    
+    CommonTreasureChestWrapper box2 (new CommonTreasureChest(false));   
+    std::cout << "This is a rare chest with a Max Capacity of " << box2.address->numberOfItems << std::endl;
 
-    Box01.printTreasureCount();
-    std::cout << "Rarity: " << Box01.isRare << std::endl;
-    std::cout << "Treasure Count: " << Box01.numberOfItems << 
-    " Rarity :" << Box01.isRare << std::endl;
-
+    box1.address->printTreasureCount();
+    std::cout << "Rarity: " << box1.address->isRare << std::endl;
+    std::cout << "Treasure Count: " << box1.address->numberOfItems << 
+    " Rarity :" << box1.address->isRare << std::endl;
     std::cout << std::endl;
 
     //UDT2
-    AudioPlugin EQ (44100);
-    //EQ.processAudio();
-    EQ.getData();
-    std::cout << "EQ instanceID(): " << EQ.instanceID() << " and EQ samplerate: " << EQ.samplerate << std::endl; 
-
+    AudioPluginWrapper eq (new AudioPlugin(44100));
+    eq.address->processAudio();
+    eq.address->getData();
+    std::cout << "EQ instanceID(): " <<  eq.address->instanceID() << " and EQ samplerate: " << 
+    eq.address->samplerate << std::endl; 
     std::cout << std::endl;
+ 
     //UDT3
-    Piano GrandPiano (88);
-    std::cout << "I'm a Piano with " << GrandPiano.range << " keys and " << GrandPiano.getOctaves() << " Ocavtes"<< std::endl;
-    //GrandPiano.pressSustainPedal();
-    //GrandPiano.playKeys(25,30, 1);
-    //GrandPiano.playKeys(50,80, 10);
-
+    PianoWrapper piano(new Piano(88));
+    std::cout << "I'm a Piano with " << piano.address->range << " keys and " << piano.address->getOctaves() << " Ocavtes"<< std::endl;
+    piano.address->pressSustainPedal();
+    piano.address->playKeys(25,30, 1);
+    piano.address->playKeys(50,80, 10);
     std::cout << std::endl;
 
     //UDT4 (using only UDTs)
-    PianoStore KeyWorld;
-    std::cout << "I'm a Piano with " << KeyWorld.steinway.range << " keys and " << 
-    KeyWorld.steinway.getOctaves()  << " Octaves." << std::endl;
-    std::cout << "I'm a Piano with " << KeyWorld.practice.range << " keys and " << 
-    KeyWorld.practice.getOctaves()  << " Octaves." << std::endl;
-    std::cout << "I'm a Piano with " << KeyWorld.toybox.range << " keys and " << 
-    KeyWorld.toybox.getOctaves()  << " Octaves." << std::endl;
-
+    PianoStoreWrapper keyworld (new PianoStore());
+    std::cout << "I'm a Piano with " << keyworld.address->steinway.range << " keys and " << 
+    keyworld.address->steinway.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << keyworld.address->practice.range << " keys and " << 
+    keyworld.address->practice.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << keyworld.address->toybox.range << " keys and " << 
+    keyworld.address->toybox.getOctaves()  << " Octaves." << std::endl;
     std::cout << std::endl;
 
     //UDT5 (using only UDTs)
-    Daw Cubase;
-    Cubase.checkInitialization();
-    std::cout << "EQ:" << Cubase.equalizer.initialized << "  Compressor:" << Cubase.compressor.initialized << "  Reverb:" << Cubase.reverb.initialized << std::endl;
-
-
+    DawWrapper cubase (new Daw());
+    cubase.address->checkInitialization();
+    std::cout << "EQ:" << cubase.address->equalizer.initialized << "  Compressor:" << cubase.address->compressor.initialized << "  Reverb:" << cubase.address->reverb.initialized << std::endl;
 
 
 
     std::cout << std::endl;
     std::cout << "good to go!" << std::endl;
     std::cout << std::endl;
+
 }
