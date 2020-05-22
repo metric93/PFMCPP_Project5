@@ -59,17 +59,17 @@ struct Piano
 
 struct PianoWrapper
 {
-    Piano* adress = nullptr; //Initilaize Pointer to a Piano UDT to nullptr
+    Piano* address = nullptr; //Initilaize Pointer to a Piano UDT to nullptr
 
     //Constructor for the PianoWrapper taking  a Pointer to a Piano UDT as an argument
     PianoWrapper(Piano* p) : 
-    adress(p)        //updating the Pointer named piano to the adress of the UDT type pointerwe have a variable in the constructor
+    address(p)        //updating the Pointer named piano to the address of the UDT type pointerwe have a variable in the constructor
     {
 
     }
     ~PianoWrapper()
     {
-        delete adress; //deleting the piano pointer when the destructor is called.
+        delete address; //deleting the piano pointer when the destructor is called.
     }
 };
 
@@ -156,17 +156,17 @@ struct AudioPlugin
 
 struct AudioPluginWrapper
 {
-    AudioPlugin* adress = nullptr;
+    AudioPlugin* address = nullptr;
 
     AudioPluginWrapper(AudioPlugin* p) :
-    adress (p)
+    address (p)
     {
 
     }
 
    ~AudioPluginWrapper ()
    {
-       delete adress;
+       delete address;
    }
 };
 
@@ -226,16 +226,16 @@ struct CommonTreasureChest
 
 struct CommonTreasureChestWrapper
 {
-    CommonTreasureChest* adress = nullptr;
+    CommonTreasureChest* address = nullptr;
 
     CommonTreasureChestWrapper(CommonTreasureChest* c) :
-    adress (c)
+    address (c)
     {
     }
 
     ~CommonTreasureChestWrapper()
     {
-        delete adress;
+        delete address;
     }
 };
 
@@ -322,16 +322,16 @@ PianoStore::~PianoStore()
 
 struct PianoStoreWrapper
 {
-    PianoStore* adress = nullptr;
+    PianoStore* address = nullptr;
 
     PianoStoreWrapper(PianoStore* p) :
-    adress (p)
+    address (p)
     {
     }
 
     ~PianoStoreWrapper()
     {
-        delete adress;
+        delete address;
     }
 };
 
@@ -370,16 +370,16 @@ struct Daw
 
 struct DawWrapper
 {
-    Daw* adress = nullptr;
+    Daw* address = nullptr;
 
     DawWrapper (Daw* d) :
-    adress (d)
+    address (d)
     {
     }
 
     ~DawWrapper()
     {
-        delete adress;
+        delete address;
     }
 };
 
@@ -390,47 +390,47 @@ int main()
 */
     //UDT1
     CommonTreasureChestWrapper box1 (new CommonTreasureChest(false));   
-    std::cout << "This is a common chest with a Max Capacity of " << box1.adress->numberOfItems << std::endl;
+    std::cout << "This is a common chest with a Max Capacity of " << box1.address->numberOfItems << std::endl;
     
     CommonTreasureChestWrapper box2 (new CommonTreasureChest(false));   
-    std::cout << "This is a rare chest with a Max Capacity of " << box2.adress->numberOfItems << std::endl;
+    std::cout << "This is a rare chest with a Max Capacity of " << box2.address->numberOfItems << std::endl;
 
-    box1.adress->printTreasureCount();
-    std::cout << "Rarity: " << box1.adress->isRare << std::endl;
-    std::cout << "Treasure Count: " << box1.adress->numberOfItems << 
-    " Rarity :" << box1.adress->isRare << std::endl;
+    box1.address->printTreasureCount();
+    std::cout << "Rarity: " << box1.address->isRare << std::endl;
+    std::cout << "Treasure Count: " << box1.address->numberOfItems << 
+    " Rarity :" << box1.address->isRare << std::endl;
     std::cout << std::endl;
 
     //UDT2
     AudioPluginWrapper eq (new AudioPlugin(44100));
-    eq.adress->processAudio();
-    eq.adress->getData();
-    std::cout << "EQ instanceID(): " <<  eq.adress->instanceID() << " and EQ samplerate: " << 
-    eq.adress->samplerate << std::endl; 
+    eq.address->processAudio();
+    eq.address->getData();
+    std::cout << "EQ instanceID(): " <<  eq.address->instanceID() << " and EQ samplerate: " << 
+    eq.address->samplerate << std::endl; 
     std::cout << std::endl;
  
     //UDT3
     PianoWrapper piano(new Piano(88));
-    std::cout << "I'm a Piano with " << piano.adress->range << " keys and " << piano.adress->getOctaves() << " Ocavtes"<< std::endl;
-    piano.adress->pressSustainPedal();
-    piano.adress->playKeys(25,30, 1);
-    piano.adress->playKeys(50,80, 10);
+    std::cout << "I'm a Piano with " << piano.address->range << " keys and " << piano.address->getOctaves() << " Ocavtes"<< std::endl;
+    piano.address->pressSustainPedal();
+    piano.address->playKeys(25,30, 1);
+    piano.address->playKeys(50,80, 10);
     std::cout << std::endl;
 
     //UDT4 (using only UDTs)
     PianoStoreWrapper keyworld (new PianoStore());
-    std::cout << "I'm a Piano with " << keyworld.adress->steinway.range << " keys and " << 
-    keyworld.adress->steinway.getOctaves()  << " Octaves." << std::endl;
-    std::cout << "I'm a Piano with " << keyworld.adress->practice.range << " keys and " << 
-    keyworld.adress->practice.getOctaves()  << " Octaves." << std::endl;
-    std::cout << "I'm a Piano with " << keyworld.adress->toybox.range << " keys and " << 
-    keyworld.adress->toybox.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << keyworld.address->steinway.range << " keys and " << 
+    keyworld.address->steinway.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << keyworld.address->practice.range << " keys and " << 
+    keyworld.address->practice.getOctaves()  << " Octaves." << std::endl;
+    std::cout << "I'm a Piano with " << keyworld.address->toybox.range << " keys and " << 
+    keyworld.address->toybox.getOctaves()  << " Octaves." << std::endl;
     std::cout << std::endl;
 
     //UDT5 (using only UDTs)
     DawWrapper cubase (new Daw());
-    cubase.adress->checkInitialization();
-    std::cout << "EQ:" << cubase.adress->equalizer.initialized << "  Compressor:" << cubase.adress->compressor.initialized << "  Reverb:" << cubase.adress->reverb.initialized << std::endl;
+    cubase.address->checkInitialization();
+    std::cout << "EQ:" << cubase.address->equalizer.initialized << "  Compressor:" << cubase.address->compressor.initialized << "  Reverb:" << cubase.address->reverb.initialized << std::endl;
 
 
 
