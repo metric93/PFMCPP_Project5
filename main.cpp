@@ -37,11 +37,9 @@
 
 #include <iostream>
 #include "LeakedObjectDetector.h"
-#include "piano.h"
-#include "audioplugin.h"
-#include "commontreasurechest.h"
-#include "pianostore.h"
-#include "daw.h"
+
+#include "Piano.h"
+#include "Piano.cpp"
 
 /*
  copied UDT 1:
@@ -64,55 +62,42 @@ struct PianoWrapper
     }
 };
 
-Piano::Piano(int keyamount) : 
-range(keyamount),
-color('b')
-{
-    if (color == 'b')
-    {
-        std::cout << "I'm a Piano with " << this->range << " keys and " << getOctaves() << " Ocavtes." << std::endl;
-    }
-}
-
-Piano::~Piano() 
-{
-    std::cout << "The Piano has been removed from the stage." << std::endl;
-}
-
-void Piano::pressSustainPedal()
-{
-    std::cout << "Sustain Pedal is pressed" << std::endl;
-}
-
-void Piano::releaseSustainPedal()
-{
-    std::cout << "Sustain Pedal is released" << std::endl;
-}
-
-void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
-{
-    std::cout << "-> Playing " << ((endingKey-startingKey+noteSteps) / noteSteps) 
-    << " Keys from: " << startingKey << " to " << endingKey << std::endl;
-    for (int i = startingKey; i <= endingKey; i += noteSteps)
-    {
-        std::cout << "Playing Key " << i << std::endl;
-    }
-}
-
-
-
-
-
-
-
-
-
-
 
 /*
  copied UDT 2:
  */
+struct AudioPlugin 
+{
+    bool bypass;
+    bool initialized;
+    int samplerate;
 
+    AudioPlugin (int plugsamplerate) :
+    bypass (false),
+    initialized (true),
+    samplerate(plugsamplerate)
+    {
+        std::cout << "New Plugin is running at " << samplerate << " Samples per Second." << std::endl;
+    } 
+    
+    ~AudioPlugin()
+    {
+        std::cout << "The Plugin has been removed." << std::endl;
+    }
+
+    void processAudio();
+
+    void getData()
+    {
+        std::cout << "AudioPlugin instanceID(): " << this->instanceID() << " and AudioPlugin samplerate: " << this->samplerate << std::endl;  
+    }
+
+
+    int instanceID() { return 3; }
+    //float memberVariable = 3.14f;
+
+    JUCE_LEAK_DETECTOR(AudioPlugin)
+};
 
 struct AudioPluginWrapper
 {
@@ -146,7 +131,43 @@ void AudioPlugin::processAudio()
 /*
  copied UDT 3:
  */
+struct CommonTreasureChest
+{
+    int numberOfItems;
+    bool isOpened;
+    bool isRare;  
 
+    CommonTreasureChest(bool rarity)
+    {
+        this->isRare = rarity;
+        this->isOpened = false;
+        this->numberOfItems = 5;
+
+        if (isRare == false)
+        {
+             std::cout << "This is a common chest with a Max Capacity of " << numberOfItems << std::endl;
+        }
+        else if (isRare == true)
+        {
+            std::cout << "This is a rare chest with a Max Capacity of " << numberOfItems << std::endl;
+        }
+    }
+
+    ~CommonTreasureChest() 
+    {
+        std::cout << "This TreasureChest has been destroyed." << std::endl;
+    }
+
+    bool openChest(bool openState);
+    bool closeChest(bool openState);
+    void lootChest();
+    int printTreasureCount();
+    bool printRarity();
+    void changeRarity(bool rarity);
+
+
+    JUCE_LEAK_DETECTOR(CommonTreasureChest)
+};
 
 struct CommonTreasureChestWrapper
 {
@@ -218,7 +239,18 @@ void CommonTreasureChest::changeRarity(bool rarity)
  new UDT 4:
   */
 
- 
+ struct PianoStore
+ {
+    PianoStore();
+    ~PianoStore();
+
+    Piano steinway;
+    Piano practice;
+    Piano toybox;
+
+    JUCE_LEAK_DETECTOR(PianoStore)
+
+ };
 
 PianoStore::PianoStore() :
 steinway (88),
@@ -254,7 +286,32 @@ struct PianoStoreWrapper
  new UDT 5:
 */
 
+struct Daw 
+{
+    AudioPlugin equalizer;
+    AudioPlugin compressor;
+    AudioPlugin reverb;
+    
+    Daw() :
+    equalizer (48000),
+    compressor (48000),
+    reverb (48000)
+    {
+        std::cout << "Showing the Daw Splashscreen" << std::endl;
+    }
 
+    ~Daw()
+    {
+        std::cout << "Saving Settings and closing the Software" << std::endl;
+    }
+
+    void checkInitialization ()
+    {
+        std::cout << "EQ:" << this->equalizer.initialized << "  Compressor:" << this->compressor.initialized << "  Reverb:" << this->reverb.initialized << std::endl;
+    }
+
+    JUCE_LEAK_DETECTOR(Daw)
+};
 
 struct DawWrapper
 {
