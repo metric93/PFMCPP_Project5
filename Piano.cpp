@@ -34,3 +34,9 @@ void Piano::playKeys(int startingKey, int endingKey, int noteSteps)
         std::cout << "Playing Key " << i << std::endl;
     }
 }
+
+int Piano::getOctaves()
+{
+    int octaves = this->range / 12;
+    return octaves;
+}

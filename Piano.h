@@ -14,11 +14,7 @@ struct Piano
     void releaseSustainPedal();
     void playKeys(int startingKey, int endingKey, int noteSteps);
 
-    int getOctaves()
-    {
-        int octaves = this->range / 12;
-        return octaves;
-    }
+    int getOctaves();
 
     JUCE_LEAK_DETECTOR(Piano)
 };
