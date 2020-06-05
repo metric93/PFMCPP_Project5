@@ -41,6 +41,7 @@
 #include "Wrappers.h"
 
 #include "Piano.h"
+#include "AudioPlugin.h"
 
 
 struct Piano;
@@ -66,67 +67,12 @@ struct PianoWrapper
 /*
  copied UDT 2:
  */
-struct AudioPlugin 
-{
-    bool bypass;
-    bool initialized;
-    int samplerate;
-
-    AudioPlugin (int plugsamplerate) :
-    bypass (false),
-    initialized (true),
-    samplerate(plugsamplerate)
-    {
-        std::cout << "New Plugin is running at " << samplerate << " Samples per Second." << std::endl;
-    } 
-    
-    ~AudioPlugin()
-    {
-        std::cout << "The Plugin has been removed." << std::endl;
-    }
-
-    void processAudio();
-
-    void getData()
-    {
-        std::cout << "AudioPlugin instanceID(): " << this->instanceID() << " and AudioPlugin samplerate: " << this->samplerate << std::endl;  
-    }
 
 
-    int instanceID() { return 3; }
-    //float memberVariable = 3.14f;
-
-    JUCE_LEAK_DETECTOR(AudioPlugin)
-};
-
-struct AudioPluginWrapper
-{
-    AudioPlugin* address = nullptr;
-
-    AudioPluginWrapper(AudioPlugin* p) :
-    address (p)
-    {
-
-    }
-
-   ~AudioPluginWrapper ()
-   {
-       delete address;
-   }
-};
 
 
-void AudioPlugin::processAudio()
-{
-    int i = 0;
-    int sampleblock = 32;
-    int processingspeed = 8;
-    while (i < sampleblock)
-    {
-        i += processingspeed;
-        std::cout << i << " out of " << sampleblock << " Samples updated.." << std::endl;
-    }
-}
+
+
 
 /*
  copied UDT 3:
