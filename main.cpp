@@ -43,35 +43,10 @@
 #include "Piano.h"
 #include "AudioPlugin.h"
 #include "CommonTreasureChest.h"
+#include "PianoStore.h"
 
 
-
- struct PianoStore
- {
-    PianoStore();
-    ~PianoStore();
-
-    Piano steinway;
-    Piano practice;
-    Piano toybox;
-
-    JUCE_LEAK_DETECTOR(PianoStore)
-
- };
-
-PianoStore::PianoStore() :
-steinway (88),
-practice (64),
-toybox (24)
-{
-    std::cout << "The Piano Store is opened!" << std::endl;
-}
-
-PianoStore::~PianoStore()
-{
-     std::cout << "The Piano Store is closed!" << std::endl;
-}
-
+ 
 struct PianoStoreWrapper
 {
     PianoStore* address = nullptr;

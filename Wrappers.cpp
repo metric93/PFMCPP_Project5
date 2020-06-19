@@ -36,4 +36,3 @@ CommonTreasureChestWrapper::~CommonTreasureChestWrapper()
     delete address;
     address = nullptr;
 }
-
