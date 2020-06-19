@@ -16,3 +16,15 @@ struct AudioPluginWrapper
     AudioPluginWrapper(AudioPlugin* p);
    ~AudioPluginWrapper ();
 };
+
+
+
+
+struct CommonTreasureChest;
+struct CommonTreasureChestWrapper
+{
+    CommonTreasureChest* address = nullptr;
+
+    CommonTreasureChestWrapper(CommonTreasureChest* c); 
+    ~CommonTreasureChestWrapper();
+};
