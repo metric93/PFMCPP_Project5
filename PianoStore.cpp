@@ -12,4 +12,3 @@ PianoStore::~PianoStore()
 {
      std::cout << "The Piano Store is closed!" << std::endl;
 }
-

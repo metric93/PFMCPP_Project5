@@ -28,3 +28,26 @@ struct CommonTreasureChestWrapper
     CommonTreasureChestWrapper(CommonTreasureChest* c); 
     ~CommonTreasureChestWrapper();
 };
+
+
+
+struct PianoStore;
+struct PianoStoreWrapper
+{
+    PianoStore* address = nullptr;
+
+    PianoStoreWrapper(PianoStore* p);
+
+    ~PianoStoreWrapper();
+};
+
+
+struct Daw;
+struct DawWrapper
+{
+    Daw* address = nullptr;
+
+    DawWrapper (Daw* d);
+
+    ~DawWrapper();
+};
